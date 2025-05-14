@@ -61,7 +61,23 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<FileStorageDbContext>();
-        dbContext.Database.Migrate();
+        // Ensure the directory exists
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        if (connectionString != null && connectionString.Contains("Data Source="))
+        {
+            var dbPath = connectionString.Split("Data Source=")[1].Split(';')[0];
+            var dbDirectory = Path.GetDirectoryName(dbPath);
+            if (!string.IsNullOrEmpty(dbDirectory) && !Directory.Exists(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+        }
+
+        // Create database if it doesn't exist and apply migrations
+        dbContext.Database.EnsureCreated();
+        
+
+
     }
 }
 
