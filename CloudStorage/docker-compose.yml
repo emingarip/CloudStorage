@@ -1,0 +1,116 @@
+services:
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./
+      dockerfile: ApiGateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Jwt:Issuer=CloudStorage
+      - Jwt:Audience=CloudStorageUsers
+      - Jwt:Key=secure-key-for-jwt-token-authentication-and-authorization
+    depends_on:
+      - auth-service
+      - file-metadata-service
+      - file-storage-service
+    networks:
+      - cloud-storage-network
+    volumes:
+      - ./ApiGateway/ocelot.json:/app/ocelot.json
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ./
+      dockerfile: src/BuildingBlocks/Services/AuthService/AuthService.API/Dockerfile
+    container_name: auth-service
+    ports:
+      - "5024:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/auth.db
+      - JwtSettings__SecretKey=secure-key-for-jwt-token-authentication-and-authorization
+      - JwtSettings__Issuer=CloudStorage
+      - JwtSettings__Audience=CloudStorageUsers
+    volumes:
+      - auth-data:/app/data
+    networks:
+      - cloud-storage-network
+
+  # File Metadata Service
+  file-metadata-service:
+    build:
+      context: ./
+      dockerfile: src/BuildingBlocks/Services/FileMetadataService/FileMetadataService.API/Dockerfile
+    container_name: file-metadata-service
+    ports:
+      - "5026:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=filemetadata;Username=postgres;Password=postgres;Port=5432
+      - StorageServiceSettings__BaseUrl=http://file-storage-service:8080
+      - JwtSettings__SecretKey=secure-key-for-jwt-token-authentication-and-authorization
+      - JwtSettings__Issuer=CloudStorage
+      - JwtSettings__Audience=CloudStorageUsers
+    depends_on:
+      - postgres
+    networks:
+      - cloud-storage-network
+
+  # File Storage Service
+  file-storage-service:
+    build:
+      context: ./
+      dockerfile: src/BuildingBlocks/Services/FileStorageService/FileStorageService.API/Dockerfile
+    container_name: file-storage-service
+    ports:
+      - "5025:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/filestorage.db
+      - JwtSettings__SecretKey=secure-key-for-jwt-token-authentication-and-authorization
+      - JwtSettings__Issuer=CloudStorage
+      - JwtSettings__Audience=CloudStorageUsers
+      - StorageProvider=Local
+      - LocalStorageSettings__BasePath=/app/storage
+      - LocalStorageSettings__BaseUrl=http://file-storage-service:8080/api/files
+    volumes:
+      - file-storage-data:/app/data
+      - file-storage:/app/storage
+    networks:
+      - cloud-storage-network
+    # Ensure container has time to create directories before starting the application
+    command: >
+      sh -c "
+        mkdir -p /app/data /app/storage &&
+        chmod -R 777 /app/data /app/storage &&
+        dotnet FileStorageService.API.dll
+      "
+
+  # PostgreSQL for File Metadata Service
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=filemetadata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - cloud-storage-network
+
+networks:
+  cloud-storage-network:
+    driver: bridge
+
+volumes:
+  auth-data:
+  file-storage-data:
+  file-storage:
+  postgres-data:

@@ -1,0 +1,186 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/auth/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "auth-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/auth/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "auth"
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "auth-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/users/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "SwaggerKey": "auth"
+        },
+        {
+            "DownstreamPathTemplate": "/api/files/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-metadata-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/files/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
+            "SwaggerKey": "filemetadata"
+        },
+        {
+            "DownstreamPathTemplate": "/api/files",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-metadata-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/files",
+            "UpstreamHttpMethod": [ "GET", "POST" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
+            "SwaggerKey": "filemetadata"
+        },
+        {
+            "DownstreamPathTemplate": "/api/files/shared",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-metadata-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/files/shared",
+            "UpstreamHttpMethod": [ "GET" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
+            "SwaggerKey": "filemetadata"
+        },
+        {
+            "DownstreamPathTemplate": "/api/files/deleted",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-metadata-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/files/deleted",
+            "UpstreamHttpMethod": [ "GET" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
+            "SwaggerKey": "filemetadata"
+        },
+        {
+            "DownstreamPathTemplate": "/api/files/upload",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-storage-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/storage/upload",
+            "UpstreamHttpMethod": [ "POST" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
+            "SwaggerKey": "filestorage"
+        },
+        {
+            "DownstreamPathTemplate": "/api/files/download/{fileId}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "file-storage-service",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/api/storage/download/{fileId}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer"
+            },
+            "SwaggerKey": "filestorage"
+        },
+        {
+            "DownstreamPathTemplate": "/swagger/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api-gateway",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/swagger/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+        },
+        {
+            "DownstreamPathTemplate": "/swagger/docs/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api-gateway",
+                    "Port": 8080
+                }
+            ],
+            "UpstreamPathTemplate": "/swagger/docs/{everything}",
+            "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE", "OPTIONS" ]
+        }
+    ],
+    "SwaggerEndPoints": [
+        {
+            "Key": "auth",
+            "Config": [
+                {
+                    "Name": "Auth API",
+                    "Version": "v1",
+                    "Url": "http://auth-service:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
+        {
+            "Key": "filemetadata",
+            "Config": [
+                {
+                    "Name": "File Metadata API",
+                    "Version": "v1",
+                    "Url": "http://file-metadata-service:8080/swagger/v1/swagger.json"
+                }
+            ]
+        },
+        {
+            "Key": "filestorage",
+            "Config": [
+                {
+                    "Name": "File Storage API",
+                    "Version": "v1",
+                    "Url": "http://file-storage-service:8080/swagger/v1/swagger.json"
+                }
+            ]
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5000",
+        "RequestIdKey": "OcRequestId"
+    }
+}

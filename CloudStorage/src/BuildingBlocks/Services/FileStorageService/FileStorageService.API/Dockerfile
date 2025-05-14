@@ -2,8 +2,10 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
 WORKDIR /app
+# Create directories for data and storage
+RUN mkdir -p /app/data /app/storage && \
+    chmod -R 777 /app/data /app/storage
 EXPOSE 8080
 EXPOSE 8081
 
@@ -27,4 +29,7 @@ RUN dotnet publish "./FileStorageService.API.csproj" -c $BUILD_CONFIGURATION -o 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# Create directories for data and storage again in the final stage
+RUN mkdir -p /app/data /app/storage && \
+    chmod -R 777 /app/data /app/storage
 ENTRYPOINT ["dotnet", "FileStorageService.API.dll"]
