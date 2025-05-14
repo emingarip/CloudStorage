@@ -1,4 +1,5 @@
 ﻿using AuthService.Application.DTOs;
+using AuthService.Domain;
 using AuthService.Domain.Interfaces;
 using AutoMapper;
 using MediatR;

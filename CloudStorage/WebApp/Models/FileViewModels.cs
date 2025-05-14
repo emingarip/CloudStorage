@@ -96,6 +96,13 @@ namespace WebApp.Models
         public string? Tags { get; set; }
     }
 
+    public enum FilePermissionType
+    {
+        Read = 1,
+        Write = 2,
+        Delete = 3
+    }
+
     public class ShareFileViewModel
     {
         public Guid FileId { get; set; }
@@ -107,9 +114,18 @@ namespace WebApp.Models
         [Display(Name = "E-posta")]
         public string Email { get; set; } = string.Empty;
 
+        // Kullanıcı ID'si (API tarafından kullanılacak)
+        public Guid? UserId { get; set; }
+
         [Required(ErrorMessage = "İzin türü gereklidir")]
         [Display(Name = "İzin")]
-        public string Permission { get; set; } = "read";
+        public string PermissionString { get; set; } = "read";
+
+        // API'ye gönderilecek enum değeri
+        public FilePermissionType Permission =>
+            PermissionString == "edit" || PermissionString == "write" ?
+            FilePermissionType.Write :
+            FilePermissionType.Read;
 
         [Display(Name = "Not")]
         public string? Note { get; set; }

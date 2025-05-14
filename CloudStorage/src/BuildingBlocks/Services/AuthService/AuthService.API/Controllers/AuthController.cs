@@ -1,6 +1,7 @@
 ﻿using AuthService.Application.Commands.Login;
 using AuthService.Application.Commands.RefreshToken;
 using AuthService.Application.Commands.Register;
+using AuthService.Application.Queries.GetUserByEmail;
 using AuthService.Application.Queries.GetUserById;
 using AuthService.Application.Queries.GetUsers;
 using MediatR;
@@ -108,6 +109,26 @@ namespace AuthService.API.Controllers
             if (result.IsFailure)
             {
                 return BadRequest(new { errors = result.Errors });
+            }
+
+            return Ok(result.Value);
+        }
+
+        [Authorize]
+        [HttpGet("by-email")]
+        public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest(new { errors = new[] { "Email is required" } });
+            }
+
+            var query = new GetUserByEmailQuery { Email = email };
+            var result = await _mediator.Send(query);
+
+            if (result.IsFailure)
+            {
+                return NotFound(new { errors = result.Errors });
             }
 
             return Ok(result.Value);

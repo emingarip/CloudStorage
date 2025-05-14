@@ -19,14 +19,7 @@ namespace WebApp.Models
 
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Ad gereklidir")]
-        [Display(Name = "Ad")]
-        public string? FirstName { get; set; }
-
-        [Required(ErrorMessage = "Soyad gereklidir")]
-        [Display(Name = "Soyad")]
-        public string? LastName { get; set; }
-
+       
         [Required(ErrorMessage = "Kullanıcı adı gereklidir")]
         [Display(Name = "Kullanıcı Adı")]
         public string? Username { get; set; }
