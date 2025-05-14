@@ -1,0 +1,93 @@
+﻿﻿﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<section class="hero text-center py-5 rounded-custom shadow-custom animate-fade-in">
+    <div class="container">
+        <h1 class="display-4 mb-3">Bulut Depolama Çözümünüz</h1>
+        <p class="lead mb-4">Dosyalarınızı güvenle saklayın, istediğiniz zaman erişin ve kolayca paylaşın.</p>
+        
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="mt-4">
+                <p class="mb-4">Merhaba, <strong>@User.Identity.Name</strong>! Hesabınıza erişim sağladınız.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-controller="Files" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-folder me-2"></i>Dosyalarım
+                    </a>
+                    <a asp-controller="Files" asp-action="Upload" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="bi bi-upload me-2"></i>Dosya Yükle
+                    </a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="mt-4">
+                <p class="mb-4">Hizmetlerimizden yararlanmak için lütfen giriş yapın veya kayıt olun.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                    </a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="bi bi-person-plus me-2"></i>Kayıt Ol
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="features py-5 mt-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Neden CloudStorage?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-shield-check feature-icon"></i>
+                        <h3 class="feature-title">Güvenli Depolama</h3>
+                        <p class="feature-text">Dosyalarınız en yüksek güvenlik standartlarıyla korunur ve şifrelenir.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-share feature-icon"></i>
+                        <h3 class="feature-title">Kolay Paylaşım</h3>
+                        <p class="feature-text">Dosyalarınızı arkadaşlarınız ve iş arkadaşlarınızla kolayca paylaşın.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-device-ssd feature-icon"></i>
+                        <h3 class="feature-title">Yedekleme</h3>
+                        <p class="feature-text">Önemli dosyalarınızı otomatik olarak yedekleyin ve veri kaybını önleyin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta bg-primary text-white p-5 rounded-custom shadow-custom mt-5">
+    <div class="container text-center">
+        <h2 class="mb-3">Hemen Başlayın</h2>
+        <p class="lead mb-4">Ücretsiz hesap oluşturun ve 5GB depolama alanı kazanın.</p>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg px-4">
+                Ücretsiz Kaydol
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Files" asp-action="Index" class="btn btn-light btn-lg px-4">
+                Dosyalarıma Git
+            </a>
+        }
+    </div>
+</section>

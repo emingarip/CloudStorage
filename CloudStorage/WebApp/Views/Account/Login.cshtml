@@ -1,0 +1,70 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.css" />
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="auth-container animate-fade-in">
+            <div class="auth-header">
+                <div class="text-center mb-4">
+                    <i class="bi bi-cloud-check text-primary" style="font-size: 3rem;"></i>
+                </div>
+                <h2>Hoş Geldiniz</h2>
+                <p>Hesabınıza erişmek için giriş yapın</p>
+            </div>
+
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="auth-form">
+                <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+
+                <div class="form-group">
+                    <label asp-for="Username" class="form-label"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input asp-for="Username" class="form-control" placeholder="Kullanıcı adınızı girin" autocomplete="username" />
+                    </div>
+                    <span asp-validation-for="Username" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password" class="form-label"></label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input asp-for="Password" class="form-control" placeholder="Şifrenizi girin" autocomplete="current-password" />
+                    </div>
+                    <span asp-validation-for="Password" class="field-validation-error"></span>
+                </div>
+
+                <div class="form-group form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label"></label>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                    </button>
+                </div>
+
+                <div class="auth-links">
+                    <div class="mb-2">
+                        <a asp-controller="Account" asp-action="ForgotPassword">
+                            <i class="bi bi-question-circle me-1"></i>Şifremi Unuttum
+                        </a>
+                    </div>
+                    <div>
+                        Hesabınız yok mu? <a asp-controller="Account" asp-action="Register" class="fw-bold">Kayıt Ol</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

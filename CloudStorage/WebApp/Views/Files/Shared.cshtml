@@ -1,0 +1,77 @@
+@model List<FileViewModel>
+@{
+    ViewData["Title"] = "Benimle Paylaşılanlar";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Benimle Paylaşılanlar</h1>
+        <div class="dashboard-actions">
+            <a asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-folder me-2"></i>Dosyalarıma Git
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="row g-4 mt-3">
+            @foreach (var file in Model)
+            {
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="file-card">
+                        <div class="file-card-header">
+                            <small class="text-muted">
+                                <i class="bi bi-person me-1"></i>@file.OwnerName tarafından paylaşıldı
+                            </small>
+                        </div>
+                        <div class="file-card-body text-center">
+                            <i class="bi @file.GetFileIcon() @file.GetFileIconColor() file-icon"></i>
+                            <h5 class="file-name">@file.Name</h5>
+                            <p class="file-info">
+                                <span>@file.GetFormattedSize()</span> • 
+                                <span>@file.ModifiedAt.ToString("dd.MM.yyyy")</span>
+                            </p>
+                        </div>
+                        <div class="file-card-footer">
+                            <small class="text-muted">
+                                <i class="bi bi-share me-1" title="Paylaşıldı"></i>
+                            </small>
+                            <div class="file-actions">
+                                <a asp-action="Details" asp-route-id="@file.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="#" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-share-x empty-state-icon"></i>
+            <h4>Henüz sizinle paylaşılan dosya yok</h4>
+            <p class="empty-state-text">Başkaları sizinle dosya paylaştığında burada görünecek</p>
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-folder me-2"></i>Dosyalarıma Git
+            </a>
+        </div>
+    }
+</div>
