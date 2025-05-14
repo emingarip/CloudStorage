@@ -71,8 +71,6 @@ namespace WebApp.Services
                     Username = model.Username,
                     Email = model.Email,
                     Password = model.Password,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
                     IpAddress = "127.0.0.1" // Simplified for demo
                 };
 

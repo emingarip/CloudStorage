@@ -27,4 +27,10 @@ RUN dotnet publish "./AuthService.API.csproj" -c $BUILD_CONFIGURATION -o /app/pu
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Create data directory and set permissions
+USER root
+RUN mkdir -p /app/data && chown -R $APP_UID:$APP_UID /app/data && chmod -R 777 /app/data
+USER $APP_UID
+
 ENTRYPOINT ["dotnet", "AuthService.API.dll"]

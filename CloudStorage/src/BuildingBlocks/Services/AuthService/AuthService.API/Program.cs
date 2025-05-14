@@ -1,5 +1,7 @@
 using AuthService.Application;
 using AuthService.Infrastructure;
+using AuthService.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,12 +32,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    //using (var scope = app.Services.CreateScope())
-    //{
-    //    var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
-    //    dbContext.Database.Migrate();
-    //    dbContext.Database.EnsureCreated();
-    //}
+    using (var scope = app.Services.CreateScope())
+    {
+
+        var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+        var passwordService = scope.ServiceProvider.GetRequiredService<AuthService.Application.Interfaces.IPasswordService>();
+        dbContext.Database.EnsureDeleted();
+        dbContext.Database.EnsureCreated();
+        await AuthService.Infrastructure.Data.AuthDbContextSeed.SeedAsync(dbContext, passwordService);
+    }
 
 
 }

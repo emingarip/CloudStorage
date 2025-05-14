@@ -3,6 +3,7 @@ using FileMetadataService.Application.Interfaces;
 using FileMetadataService.Infrastructure;
 using FileMetadataService.Infrastructure.Data;
 using FileMetadataService.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 
@@ -56,7 +57,7 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<FileMetadataDbContext>();
-        //dbContext.Database.Migrate();
+        dbContext.Database.Migrate();
     }
 }
 

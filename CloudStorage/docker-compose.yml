@@ -1,4 +1,25 @@
 services:
+  # Web Application
+  webapp:
+    build:
+      context: ./
+      dockerfile: WebApp/Dockerfile
+    container_name: webapp
+    ports:
+      - "5001:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiSettings__AuthService__BaseUrl=http://auth-service:8080
+      - ApiSettings__FileStorageService__BaseUrl=http://file-storage-service:8080
+      - ApiSettings__FileMetadataService__BaseUrl=http://file-metadata-service:8080
+    depends_on:
+      - api-gateway
+      - auth-service
+      - file-metadata-service
+      - file-storage-service
+    networks:
+      - cloud-storage-network
+
   # API Gateway
   api-gateway:
     build:
@@ -36,7 +57,7 @@ services:
       - JwtSettings__Issuer=CloudStorage
       - JwtSettings__Audience=CloudStorageUsers
     volumes:
-      - auth-data:/app/data
+      - ./data/auth:/app/data
     networks:
       - cloud-storage-network
 
@@ -50,7 +71,7 @@ services:
       - "5026:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=filemetadata;Username=postgres;Password=postgres;Port=5432
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=filemetadata;Username=egtest;Password=eg13275190;Port=5432
       - StorageServiceSettings__BaseUrl=http://file-storage-service:8080
       - JwtSettings__SecretKey=secure-key-for-jwt-token-authentication-and-authorization
       - JwtSettings__Issuer=CloudStorage
@@ -97,8 +118,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=egtest
+      - POSTGRES_PASSWORD=eg13275190
       - POSTGRES_DB=filemetadata
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -110,7 +131,7 @@ networks:
     driver: bridge
 
 volumes:
-  auth-data:
+  # auth-data: # Replaced with host volume
   file-storage-data:
   file-storage:
   postgres-data:

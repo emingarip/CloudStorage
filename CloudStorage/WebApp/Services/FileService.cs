@@ -320,15 +320,37 @@ namespace WebApp.Services
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+                // Eğer UserId null ise, email ile kullanıcıyı bulalım
+                if (model.UserId == null)
+                {
+                    var userId = await GetUserIdByEmailAsync(token, model.Email);
+                    if (userId == null)
+                    {
+                        _logger.LogError("User not found with email: {Email}", model.Email);
+                        return false;
+                    }
+                    model.UserId = userId.Value;
+                }
+
+                // ShareFileCommand ile uyumlu bir komut oluştur
                 var shareCommand = new
                 {
                     FileId = model.FileId,
-                    Email = model.Email,
-                    Permission = model.Permission
+                    UserId = model.UserId.Value,
+                    Permission = (int)model.Permission // Enum değerini int olarak gönder
                 };
 
                 var content = new StringContent(JsonSerializer.Serialize(shareCommand), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync($"api/iles/{model.FileId}/share", content);
+                _logger.LogInformation("Sending share command: {Command}", JsonSerializer.Serialize(shareCommand));
+
+                var response = await _httpClient.PostAsync($"api/files/{model.FileId}/share", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError("Share file API error: {StatusCode}, Response: {ErrorContent}",
+                        response.StatusCode, errorContent);
+                }
 
                 return response.IsSuccessStatusCode;
             }
@@ -340,6 +362,65 @@ namespace WebApp.Services
             finally
             {
                 _httpClient.DefaultRequestHeaders.Authorization = null;
+            }
+        }
+
+        // Email adresine göre kullanıcı ID'sini getiren yardımcı metod
+        private async Task<Guid?> GetUserIdByEmailAsync(string token, string email)
+        {
+            try
+            {
+                // AuthService'in base URL'sini kullanmak için geçici bir HttpClient oluşturuyoruz
+                using var authClient = new HttpClient();
+                string authBaseUrl = _configuration["ApiSettings:AuthService:BaseUrl"] ?? "http://localhost:5001";
+                _logger.LogInformation("AuthService BaseUrl: {BaseUrl}", authBaseUrl);
+
+                authClient.BaseAddress = new Uri(authBaseUrl);
+                authClient.DefaultRequestHeaders.Accept.Clear();
+                authClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                authClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                // Email'e göre kullanıcı bilgilerini al - yeni endpoint'i kullanıyoruz
+                string requestUrl = $"api/auth/by-email?email={Uri.EscapeDataString(email)}";
+                _logger.LogInformation("Making request to: {RequestUrl}", requestUrl);
+
+                var response = await authClient.GetAsync(requestUrl);
+                _logger.LogInformation("Response status code: {StatusCode}", response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogInformation("Response content: {Content}", responseContent);
+
+                    var user = JsonSerializer.Deserialize<UserDto>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    // String ID'yi Guid'e dönüştür
+                    if (user != null && !string.IsNullOrEmpty(user.Id) && Guid.TryParse(user.Id, out Guid userId))
+                    {
+                        _logger.LogInformation("Successfully parsed user ID: {UserId}", userId);
+                        return userId;
+                    }
+                    else
+                    {
+                        _logger.LogWarning("User ID could not be parsed to Guid: {UserId}", user?.Id);
+                        return null;
+                    }
+                }
+
+                // Başarısız yanıt içeriğini de logla
+                var errorContent = await response.Content.ReadAsStringAsync();
+                _logger.LogWarning("Failed to get user by email: {StatusCode}, Response: {ErrorContent}",
+                    response.StatusCode, errorContent);
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting user by email");
+                return null;
             }
         }
 

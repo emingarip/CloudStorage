@@ -45,24 +45,24 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Permission" class="form-label"></label>
+                            <label asp-for="PermissionString" class="form-label">İzin</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" asp-for="Permission" id="permissionRead" value="read" checked>
+                                    <input class="form-check-input" type="radio" asp-for="PermissionString" id="permissionRead" value="read" checked>
                                     <label class="form-check-label" for="permissionRead">
                                         <i class="bi bi-eye me-1"></i>Görüntüleme
                                         <small class="d-block text-muted">Kullanıcı dosyayı görüntüleyebilir ve indirebilir</small>
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" asp-for="Permission" id="permissionEdit" value="edit">
+                                    <input class="form-check-input" type="radio" asp-for="PermissionString" id="permissionEdit" value="edit">
                                     <label class="form-check-label" for="permissionEdit">
                                         <i class="bi bi-pencil me-1"></i>Düzenleme
                                         <small class="d-block text-muted">Kullanıcı dosyayı düzenleyebilir ve yeni sürüm yükleyebilir</small>
                                     </label>
                                 </div>
                             </div>
-                            <span asp-validation-for="Permission" class="text-danger"></span>
+                            <span asp-validation-for="PermissionString" class="text-danger"></span>
                         </div>
 
                         <div class="mb-4">
