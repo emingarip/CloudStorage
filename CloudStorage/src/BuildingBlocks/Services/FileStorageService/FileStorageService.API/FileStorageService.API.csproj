@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FileStorageService.Application\FileStorageService.Application.csproj" />
     <ProjectReference Include="..\FileStorageService.Infrastructure\FileStorageService.Infrastructure.csproj" />
   </ItemGroup>
