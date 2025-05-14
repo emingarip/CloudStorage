@@ -1,11 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{AD31B74C-572B-442D-AA2E-7EFB27C6A763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "src\BuildingBlocks\SharedKernel\SharedKernel.csproj", "{B4CFE0B9-046B-4563-A993-9A892C9782B5}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AD31B74C-572B-442D-AA2E-7EFB27C6A763} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B4CFE0B9-046B-4563-A993-9A892C9782B5} = {AD31B74C-572B-442D-AA2E-7EFB27C6A763}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD9CB638-C3C4-422A-BC26-9E9893C45894}
