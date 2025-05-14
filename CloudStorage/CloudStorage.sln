@@ -21,6 +21,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Domain", "src\B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Infrastructure", "src\BuildingBlocks\Services\AuthService\AuthService.Infrastructure\AuthService.Infrastructure.csproj", "{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileMetadataService", "FileMetadataService", "{540A24EC-0027-41A5-A340-794F0F2889BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMetadataService.Infrastructure", "src\BuildingBlocks\Services\FileMetadataService\FileMetadataService.Infrastructure\FileMetadataService.Infrastructure.csproj", "{46648FC5-F30E-4C72-A14C-135C12786F0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMetadataService.Domain", "src\BuildingBlocks\Services\FileMetadataService\FileMetadataService.Domain\FileMetadataService.Domain.csproj", "{F20078C9-28A5-43E3-BD13-2C083A9B6794}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMetadataService.Application", "src\BuildingBlocks\Services\FileMetadataService\FileMetadataService.Application\FileMetadataService.Application.csproj", "{0857BAB0-F83B-434B-800F-AA251068472A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMetadataService.API", "src\BuildingBlocks\Services\FileMetadataService\FileMetadataService.API\FileMetadataService.API.csproj", "{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +57,22 @@ Global
 		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46648FC5-F30E-4C72-A14C-135C12786F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46648FC5-F30E-4C72-A14C-135C12786F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46648FC5-F30E-4C72-A14C-135C12786F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46648FC5-F30E-4C72-A14C-135C12786F0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20078C9-28A5-43E3-BD13-2C083A9B6794}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20078C9-28A5-43E3-BD13-2C083A9B6794}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20078C9-28A5-43E3-BD13-2C083A9B6794}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20078C9-28A5-43E3-BD13-2C083A9B6794}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0857BAB0-F83B-434B-800F-AA251068472A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0857BAB0-F83B-434B-800F-AA251068472A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0857BAB0-F83B-434B-800F-AA251068472A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0857BAB0-F83B-434B-800F-AA251068472A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +86,11 @@ Global
 		{61133062-9DBA-49BC-A5C9-8692A63ECE73} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
 		{FA9586AD-89A4-4067-924A-11D41082A31C} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
 		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
+		{540A24EC-0027-41A5-A340-794F0F2889BC} = {719572C9-5739-4AA8-BB5C-63C17B4978CD}
+		{46648FC5-F30E-4C72-A14C-135C12786F0F} = {540A24EC-0027-41A5-A340-794F0F2889BC}
+		{F20078C9-28A5-43E3-BD13-2C083A9B6794} = {540A24EC-0027-41A5-A340-794F0F2889BC}
+		{0857BAB0-F83B-434B-800F-AA251068472A} = {540A24EC-0027-41A5-A340-794F0F2889BC}
+		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187} = {540A24EC-0027-41A5-A340-794F0F2889BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD9CB638-C3C4-422A-BC26-9E9893C45894}
