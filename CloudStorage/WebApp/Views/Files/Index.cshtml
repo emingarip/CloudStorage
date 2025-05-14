@@ -1,0 +1,315 @@
+@model List<FileViewModel>
+@{
+    ViewData["Title"] = "Dosyalarım";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Dosyalarım</h1>
+        <div class="dashboard-actions">
+            <a asp-action="Upload" class="btn btn-primary">
+                <i class="bi bi-upload me-2"></i>Dosya Yükle
+            </a>
+            <a asp-action="Deleted" class="btn btn-outline-secondary">
+                <i class="bi bi-trash me-2"></i>Çöp Kutusu
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="upload-area mb-4" onclick="document.getElementById('uploadButton').click()">
+        <i class="bi bi-cloud-upload upload-icon"></i>
+        <h4 class="upload-text">Dosya yüklemek için tıklayın veya sürükleyin</h4>
+        <p class="upload-hint">Desteklenen dosya türleri: PDF, Word, Excel, PowerPoint, resimler ve daha fazlası</p>
+        <a id="uploadButton" asp-action="Upload" class="d-none">Yükle</a>
+    </div>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-tab-pane" type="button" role="tab" aria-controls="all-tab-pane" aria-selected="true">
+                <i class="bi bi-grid me-2"></i>Tümü
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents-tab-pane" type="button" role="tab" aria-controls="documents-tab-pane" aria-selected="false">
+                <i class="bi bi-file-earmark-text me-2"></i>Belgeler
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="images-tab" data-bs-toggle="tab" data-bs-target="#images-tab-pane" type="button" role="tab" aria-controls="images-tab-pane" aria-selected="false">
+                <i class="bi bi-image me-2"></i>Resimler
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="shared-tab" data-bs-toggle="tab" data-bs-target="#shared-tab-pane" type="button" role="tab" aria-controls="shared-tab-pane" aria-selected="false">
+                <i class="bi bi-share me-2"></i>Paylaşılanlar
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="all-tab-pane" role="tabpanel" aria-labelledby="all-tab" tabindex="0">
+            @if (Model.Any())
+            {
+                <div class="row g-4 mt-3">
+                    @foreach (var file in Model)
+                    {
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="file-card">
+                                <div class="file-card-body text-center">
+                                    <i class="bi @file.GetFileIcon() @file.GetFileIconColor() file-icon"></i>
+                                    <h5 class="file-name">@file.Name</h5>
+                                    <p class="file-info">
+                                        <span>@file.GetFormattedSize()</span> •
+                                        <span>@file.ModifiedAt.ToString("dd.MM.yyyy")</span>
+                                    </p>
+                                </div>
+                                <div class="file-card-footer">
+                                    <small class="text-muted">
+                                        @if (file.IsShared)
+                                        {
+                                            <i class="bi bi-share me-1" title="Paylaşıldı"></i>
+                                        }
+                                    </small>
+                                    <div class="file-actions">
+                                        <a asp-action="Details" asp-route-id="@file.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Download" asp-route-id="@file.Id" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <div class="dropdown d-inline-block">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" asp-action="Share" asp-route-id="@file.Id">
+                                                        <i class="bi bi-share me-2"></i>Paylaş
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="bi bi-pencil me-2"></i>Yeniden Adlandır
+                                                    </a>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <form asp-action="Delete" asp-route-id="@file.Id" method="post" onsubmit="return confirm('Bu dosyayı silmek istediğinizden emin misiniz?');">
+                                                        <button type="submit" class="dropdown-item text-danger">
+                                                            <i class="bi bi-trash me-2"></i>Sil
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-folder-x empty-state-icon"></i>
+                    <h4>Henüz dosyanız yok</h4>
+                    <p class="empty-state-text">Dosya yükleyerek başlayın</p>
+                    <a asp-action="Upload" class="btn btn-primary">
+                        <i class="bi bi-upload me-2"></i>Dosya Yükle
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="tab-pane fade" id="documents-tab-pane" role="tabpanel" aria-labelledby="documents-tab" tabindex="0">
+            @{
+                var documents = Model.Where(f => f.FileType == FileType.Document || f.FileType == FileType.Pdf || f.FileType == FileType.Spreadsheet || f.FileType == FileType.Presentation).ToList();
+            }
+            @if (documents.Any())
+            {
+                <div class="row g-4 mt-3">
+                    @foreach (var file in documents)
+                    {
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="file-card">
+                                <div class="file-card-body text-center">
+                                    <i class="bi @file.GetFileIcon() @file.GetFileIconColor() file-icon"></i>
+                                    <h5 class="file-name">@file.Name</h5>
+                                    <p class="file-info">
+                                        <span>@file.GetFormattedSize()</span> •
+                                        <span>@file.ModifiedAt.ToString("dd.MM.yyyy")</span>
+                                    </p>
+                                </div>
+                                <div class="file-card-footer">
+                                    <small class="text-muted">
+                                        @if (file.IsShared)
+                                        {
+                                            <i class="bi bi-share me-1" title="Paylaşıldı"></i>
+                                        }
+                                    </small>
+                                    <div class="file-actions">
+                                        <a asp-action="Details" asp-route-id="@file.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Download" asp-route-id="@file.Id" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <div class="dropdown d-inline-block">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" asp-action="Share" asp-route-id="@file.Id">
+                                                        <i class="bi bi-share me-2"></i>Paylaş
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="bi bi-pencil me-2"></i>Yeniden Adlandır
+                                                    </a>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <form asp-action="Delete" asp-route-id="@file.Id" method="post" onsubmit="return confirm('Bu dosyayı silmek istediğinizden emin misiniz?');">
+                                                        <button type="submit" class="dropdown-item text-danger">
+                                                            <i class="bi bi-trash me-2"></i>Sil
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-file-earmark-x empty-state-icon"></i>
+                    <h4>Henüz belge yok</h4>
+                    <p class="empty-state-text">Belge yükleyerek başlayın</p>
+                    <a asp-action="Upload" class="btn btn-primary">
+                        <i class="bi bi-upload me-2"></i>Belge Yükle
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="tab-pane fade" id="images-tab-pane" role="tabpanel" aria-labelledby="images-tab" tabindex="0">
+            @{
+                var images = Model.Where(f => f.FileType == FileType.Image).ToList();
+            }
+            @if (images.Any())
+            {
+                <div class="row g-4 mt-3">
+                    @foreach (var file in images)
+                    {
+                        <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="file-card">
+                                <div class="file-card-body text-center">
+                                    <i class="bi @file.GetFileIcon() @file.GetFileIconColor() file-icon"></i>
+                                    <h5 class="file-name">@file.Name</h5>
+                                    <p class="file-info">
+                                        <span>@file.GetFormattedSize()</span> •
+                                        <span>@file.ModifiedAt.ToString("dd.MM.yyyy")</span>
+                                    </p>
+                                </div>
+                                <div class="file-card-footer">
+                                    <small class="text-muted">
+                                        @if (file.IsShared)
+                                        {
+                                            <i class="bi bi-share me-1" title="Paylaşıldı"></i>
+                                        }
+                                    </small>
+                                    <div class="file-actions">
+                                        <a asp-action="Details" asp-route-id="@file.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Download" asp-route-id="@file.Id" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-download"></i>
+                                        </a>
+                                        <div class="dropdown d-inline-block">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item" asp-action="Share" asp-route-id="@file.Id">
+                                                        <i class="bi bi-share me-2"></i>Paylaş
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="bi bi-pencil me-2"></i>Yeniden Adlandır
+                                                    </a>
+                                                </li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <form asp-action="Delete" asp-route-id="@file.Id" method="post" onsubmit="return confirm('Bu dosyayı silmek istediğinizden emin misiniz?');">
+                                                        <button type="submit" class="dropdown-item text-danger">
+                                                            <i class="bi bi-trash me-2"></i>Sil
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-image-x empty-state-icon"></i>
+                    <h4>Henüz resim yok</h4>
+                    <p class="empty-state-text">Resim yükleyerek başlayın</p>
+                    <a asp-action="Upload" class="btn btn-primary">
+                        <i class="bi bi-upload me-2"></i>Resim Yükle
+                    </a>
+                </div>
+            }
+        </div>
+
+        <div class="tab-pane fade" id="shared-tab-pane" role="tabpanel" aria-labelledby="shared-tab" tabindex="0">
+            <div class="text-center py-5">
+                <a asp-action="Shared" class="btn btn-primary">
+                    <i class="bi bi-share me-2"></i>Paylaşılan Dosyaları Görüntüle
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Dosya kartlarına tıklandığında detay sayfasına yönlendirme
+        document.querySelectorAll('.file-card-body').forEach(card => {
+            card.addEventListener('click', function() {
+                const detailsLink = this.closest('.file-card').querySelector('a[asp-action="Details"]');
+                if (detailsLink) {
+                    window.location.href = detailsLink.getAttribute('href');
+                }
+            });
+        });
+    </script>
+}

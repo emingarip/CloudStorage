@@ -1,0 +1,280 @@
+.dashboard-container {
+    padding: 1.5rem 0;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+}
+
+.dashboard-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.file-card {
+    border-radius: 8px;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.file-card-header {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.file-card-body {
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+.file-card-footer {
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+}
+
+.file-icon.pdf {
+    color: #dc3545;
+}
+
+.file-icon.image {
+    color: #28a745;
+}
+
+.file-icon.document {
+    color: #007bff;
+}
+
+.file-icon.archive {
+    color: #fd7e14;
+}
+
+.file-name {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    word-break: break-word;
+}
+
+.file-info {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.file-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.file-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.upload-area {
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: #007bff;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.upload-hint {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.nav-tabs {
+    margin-bottom: 1.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.empty-state-icon {
+    font-size: 4rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+.empty-state-text {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.file-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.file-detail-icon {
+    font-size: 3rem;
+    margin-right: 1.5rem;
+}
+
+.file-detail-info {
+    flex-grow: 1;
+}
+
+.file-detail-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.file-detail-meta {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.file-detail-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.file-preview {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.file-preview img {
+    max-width: 100%;
+    height: auto;
+}
+
+.file-preview-placeholder {
+    background-color: #f8f9fa;
+    padding: 3rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+.share-list {
+    margin-top: 2rem;
+}
+
+.share-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 1rem;
+}
+
+.share-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 1rem;
+}
+
+.share-info {
+    flex-grow: 1;
+}
+
+.share-email {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+.share-permission {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.share-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .dashboard-actions {
+        width: 100%;
+    }
+    
+    .dashboard-actions .btn {
+        flex-grow: 1;
+    }
+    
+    .file-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .file-detail-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .file-detail-actions {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    
+    .file-detail-actions .btn {
+        flex-grow: 1;
+    }
+}

@@ -1,0 +1,146 @@
+@model ShareFileViewModel
+@{
+    ViewData["Title"] = "Dosya Paylaş";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Dosya Paylaş</h1>
+        <div class="dashboard-actions">
+            <a asp-action="Details" asp-route-id="@Model.FileId" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Dosya Detaylarına Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-share text-primary" style="font-size: 3rem;"></i>
+                        <h3 class="mt-3">Dosya Paylaş</h3>
+                        <p class="text-muted">
+                            <strong>@Model.FileName</strong> dosyasını başkalarıyla paylaşın
+                        </p>
+                    </div>
+
+                    <form asp-action="Share" method="post">
+                        <input type="hidden" asp-for="FileId" />
+                        <input type="hidden" asp-for="FileName" />
+
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input asp-for="Email" class="form-control" placeholder="Paylaşmak istediğiniz kişinin e-posta adresini girin" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Permission" class="form-label"></label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="Permission" id="permissionRead" value="read" checked>
+                                    <label class="form-check-label" for="permissionRead">
+                                        <i class="bi bi-eye me-1"></i>Görüntüleme
+                                        <small class="d-block text-muted">Kullanıcı dosyayı görüntüleyebilir ve indirebilir</small>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="Permission" id="permissionEdit" value="edit">
+                                    <label class="form-check-label" for="permissionEdit">
+                                        <i class="bi bi-pencil me-1"></i>Düzenleme
+                                        <small class="d-block text-muted">Kullanıcı dosyayı düzenleyebilir ve yeni sürüm yükleyebilir</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Permission" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Note" class="form-label"></label>
+                            <textarea asp-for="Note" class="form-control" rows="3" placeholder="Paylaşım hakkında bir not ekleyin (isteğe bağlı)"></textarea>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-share me-2"></i>Paylaş
+                            </button>
+                            <a asp-action="Details" asp-route-id="@Model.FileId" class="btn btn-outline-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-link-45deg me-2"></i>Paylaşım Bağlantısı
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted">Dosyayı herhangi biriyle paylaşmak için aşağıdaki bağlantıyı kullanabilirsiniz:</p>
+                    
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="shareLink" value="https://cloudstorage.com/share/abc123" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyShareLink()">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="enableLink" checked>
+                        <label class="form-check-label" for="enableLink">Bağlantı ile paylaşımı etkinleştir</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function copyShareLink() {
+            const shareLink = document.getElementById('shareLink');
+            shareLink.select();
+            document.execCommand('copy');
+            
+            // Kopyalandı bildirimi
+            const button = document.querySelector('#shareLink + button');
+            const originalHtml = button.innerHTML;
+            button.innerHTML = '<i class="bi bi-check"></i>';
+            button.classList.add('btn-success');
+            button.classList.remove('btn-outline-secondary');
+            
+            setTimeout(() => {
+                button.innerHTML = originalHtml;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-outline-secondary');
+            }, 2000);
+        }
+        
+        // Bağlantı paylaşımını etkinleştir/devre dışı bırak
+        document.getElementById('enableLink').addEventListener('change', function() {
+            const shareLink = document.getElementById('shareLink');
+            const copyButton = document.querySelector('#shareLink + button');
+            
+            if (this.checked) {
+                shareLink.removeAttribute('disabled');
+                copyButton.removeAttribute('disabled');
+            } else {
+                shareLink.setAttribute('disabled', 'disabled');
+                copyButton.setAttribute('disabled', 'disabled');
+            }
+        });
+    </script>
+}

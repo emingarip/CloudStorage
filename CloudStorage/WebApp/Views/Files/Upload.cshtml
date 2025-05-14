@@ -1,0 +1,235 @@
+@model UploadFileViewModel
+@{
+    ViewData["Title"] = "Dosya Yükle";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <style>
+        .upload-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .upload-preview {
+            border: 2px dashed #ced4da;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: border-color 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-preview.active {
+            border-color: var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-preview input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .upload-hint {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .file-preview {
+            display: none;
+            text-align: left;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .file-preview.show {
+            display: block;
+        }
+        
+        .file-preview-header {
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-preview-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .file-preview-info {
+            flex-grow: 1;
+        }
+        
+        .file-preview-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .file-preview-size {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Dosya Yükle</h1>
+        <div class="dashboard-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Dosyalarıma Dön
+            </a>
+        </div>
+    </div>
+
+    <div class="upload-container">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form asp-action="Upload" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    
+                    <div class="upload-preview" id="uploadPreview">
+                        <input asp-for="File" type="file" id="fileInput" onchange="previewFile()" />
+                        <i class="bi bi-cloud-upload upload-icon" id="uploadIcon"></i>
+                        <h4 class="upload-text">Dosya yüklemek için tıklayın veya sürükleyin</h4>
+                        <p class="upload-hint">Desteklenen dosya türleri: PDF, Word, Excel, PowerPoint, resimler ve daha fazlası</p>
+                        <span asp-validation-for="File" class="text-danger"></span>
+                        
+                        <div class="file-preview" id="filePreview">
+                            <div class="file-preview-header">
+                                <i class="bi bi-file-earmark file-preview-icon" id="fileIcon"></i>
+                                <div class="file-preview-info">
+                                    <h5 class="file-preview-name" id="fileName">dosya.pdf</h5>
+                                    <p class="file-preview-size" id="fileSize">0 KB</p>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="resetFile()">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Dosya hakkında açıklama ekleyin (isteğe bağlı)"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="Tags" class="form-label"></label>
+                        <input asp-for="Tags" class="form-control" placeholder="Etiketleri virgülle ayırarak girin (isteğe bağlı)" />
+                        <span asp-validation-for="Tags" class="text-danger"></span>
+                        <div class="form-text">Örnek: rapor, proje, sunum</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-cloud-upload me-2"></i>Dosyayı Yükle
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const uploadPreview = document.getElementById('uploadPreview');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const fileIcon = document.getElementById('fileIcon');
+        const uploadIcon = document.getElementById('uploadIcon');
+        
+        // Dosya sürükle bırak işlemi için
+        uploadPreview.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadPreview.classList.add('active');
+        });
+        
+        uploadPreview.addEventListener('dragleave', () => {
+            uploadPreview.classList.remove('active');
+        });
+        
+        uploadPreview.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadPreview.classList.remove('active');
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                previewFile();
+            }
+        });
+        
+        function previewFile() {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileName.textContent = file.name;
+                
+                // Dosya boyutunu formatla
+                const fileSizeKB = file.size / 1024;
+                if (fileSizeKB < 1024) {
+                    fileSize.textContent = `${fileSizeKB.toFixed(0)} KB`;
+                } else {
+                    const fileSizeMB = fileSizeKB / 1024;
+                    fileSize.textContent = `${fileSizeMB.toFixed(1)} MB`;
+                }
+                
+                // Dosya türüne göre ikon belirle
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                let iconClass = 'bi-file-earmark';
+                
+                if (['pdf'].includes(fileExtension)) {
+                    iconClass = 'bi-file-earmark-pdf text-danger';
+                } else if (['doc', 'docx', 'txt', 'rtf'].includes(fileExtension)) {
+                    iconClass = 'bi-file-earmark-word text-primary';
+                } else if (['xls', 'xlsx', 'csv'].includes(fileExtension)) {
+                    iconClass = 'bi-file-earmark-excel text-success';
+                } else if (['ppt', 'pptx'].includes(fileExtension)) {
+                    iconClass = 'bi-file-earmark-ppt text-warning';
+                } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'].includes(fileExtension)) {
+                    iconClass = 'bi-file-earmark-image text-info';
+                } else if (['zip', 'rar', '7z', 'tar', 'gz'].includes(fileExtension)) {
+                    iconClass = 'bi-file-earmark-zip text-warning';
+                }
+                
+                fileIcon.className = `bi ${iconClass} file-preview-icon`;
+                
+                // Önizlemeyi göster
+                filePreview.classList.add('show');
+                uploadIcon.style.display = 'none';
+            }
+        }
+        
+        function resetFile() {
+            fileInput.value = '';
+            filePreview.classList.remove('show');
+            uploadIcon.style.display = 'block';
+        }
+    </script>
+}

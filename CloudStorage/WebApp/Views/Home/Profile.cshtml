@@ -1,0 +1,232 @@
+@model UserInfoViewModel
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-right: 2rem;
+        }
+        
+        .profile-info {
+            flex-grow: 1;
+        }
+        
+        .profile-name {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-email {
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Profilim</h1>
+        <div class="dashboard-actions">
+            <a asp-controller="Files" asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-folder me-2"></i>Dosyalarıma Git
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            @(Model.Username?.Substring(0, 1).ToUpper())
+                        </div>
+                        <div class="profile-info">
+                            <h2 class="profile-name">@Model.Username</h2>
+                            <p class="profile-email">
+                                <i class="bi bi-envelope me-2"></i>@Model.Email
+                            </p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">12</div>
+                                    <div class="stat-label">Dosya</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">3</div>
+                                    <div class="stat-label">Paylaşım</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">250 MB</div>
+                                    <div class="stat-label">Kullanılan Alan</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="btn btn-outline-primary">
+                                <i class="bi bi-pencil me-2"></i>Düzenle
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-vcard me-2"></i>Hesap Bilgileri
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <strong>Kullanıcı ID</strong>
+                        </div>
+                        <div class="col-md-8">
+                            @Model.UserId
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <strong>Kullanıcı Adı</strong>
+                        </div>
+                        <div class="col-md-8">
+                            @Model.Username
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <strong>E-posta</strong>
+                        </div>
+                        <div class="col-md-8">
+                            @Model.Email
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <strong>Üyelik Tarihi</strong>
+                        </div>
+                        <div class="col-md-8">
+                            @DateTime.Now.AddMonths(-3).ToString("dd.MM.yyyy")
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong>Son Giriş</strong>
+                        </div>
+                        <div class="col-md-8">
+                            @DateTime.Now.ToString("dd.MM.yyyy HH:mm")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-hdd me-2"></i>Depolama
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                        <div class="position-relative d-inline-block">
+                            <svg width="120" height="120" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="54" fill="none" stroke="#e9ecef" stroke-width="12" />
+                                <circle cx="60" cy="60" r="54" fill="none" stroke="var(--primary-color)" stroke-width="12" stroke-dasharray="339.3" stroke-dashoffset="254.5" />
+                            </svg>
+                            <div class="position-absolute top-50 start-50 translate-middle">
+                                <h3 class="mb-0">25%</h3>
+                                <small class="text-muted">Kullanılan</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Kullanılan Alan</span>
+                        <span class="fw-bold">250 MB</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Toplam Alan</span>
+                        <span class="fw-bold">1 GB</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Kalan Alan</span>
+                        <span class="fw-bold">750 MB</span>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button class="btn btn-outline-primary">
+                            <i class="bi bi-arrow-up-circle me-2"></i>Depolama Alanı Yükselt
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-shield-lock me-2"></i>Güvenlik
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-secondary">
+                            <i class="bi bi-key me-2"></i>Şifre Değiştir
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="bi bi-shield-check me-2"></i>İki Faktörlü Doğrulama
+                        </button>
+                        <button class="btn btn-outline-danger">
+                            <i class="bi bi-trash me-2"></i>Hesabı Sil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

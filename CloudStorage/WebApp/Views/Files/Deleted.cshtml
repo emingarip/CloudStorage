@@ -1,0 +1,130 @@
+@model List<FileViewModel>
+@{
+    ViewData["Title"] = "Çöp Kutusu";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard.css" />
+}
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1 class="dashboard-title">Çöp Kutusu</h1>
+        <div class="dashboard-actions">
+            <a asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-folder me-2"></i>Dosyalarıma Dön
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="alert alert-warning" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <strong>Bilgi:</strong> Silinen dosyalar 30 gün boyunca çöp kutusunda saklanır ve bu süre sonunda otomatik olarak kalıcı olarak silinir.
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4 mt-3">
+            @foreach (var file in Model)
+            {
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="file-card">
+                        <div class="file-card-header">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar me-1"></i>Silinme: @file.DeletedAt?.ToString("dd.MM.yyyy")
+                            </small>
+                        </div>
+                        <div class="file-card-body text-center">
+                            <i class="bi @file.GetFileIcon() @file.GetFileIconColor() file-icon"></i>
+                            <h5 class="file-name">@file.Name</h5>
+                            <p class="file-info">
+                                <span>@file.GetFormattedSize()</span> • 
+                                <span>@file.ModifiedAt.ToString("dd.MM.yyyy")</span>
+                            </p>
+                        </div>
+                        <div class="file-card-footer">
+                            <small class="text-muted">
+                                @if (file.IsShared)
+                                {
+                                    <i class="bi bi-share me-1" title="Paylaşıldı"></i>
+                                }
+                            </small>
+                            <div class="file-actions">
+                                <form asp-action="Restore" asp-route-id="@file.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-file-id="@file.Id" data-file-name="@file.Name">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Kalıcı Silme Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Dosyayı Kalıcı Olarak Sil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-danger"><i class="bi bi-exclamation-triangle me-2"></i><strong>Uyarı:</strong> Bu işlem geri alınamaz!</p>
+                        <p><span id="fileName"></span> dosyasını kalıcı olarak silmek istediğinizden emin misiniz?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <form id="permanentDeleteForm" asp-action="PermanentDelete" method="post">
+                            <input type="hidden" id="fileIdInput" name="id" value="" />
+                            <button type="submit" class="btn btn-danger">Kalıcı Olarak Sil</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-trash empty-state-icon"></i>
+            <h4>Çöp Kutusu Boş</h4>
+            <p class="empty-state-text">Silinen dosyalar burada görünecek</p>
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-folder me-2"></i>Dosyalarıma Git
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Kalıcı silme modalı için
+        const deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const fileId = button.getAttribute('data-file-id');
+                const fileName = button.getAttribute('data-file-name');
+                
+                const modalFileName = document.getElementById('fileName');
+                const fileIdInput = document.getElementById('fileIdInput');
+                
+                modalFileName.textContent = fileName;
+                fileIdInput.value = fileId;
+            });
+        }
+    </script>
+}
