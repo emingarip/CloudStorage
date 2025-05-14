@@ -31,6 +31,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMetadataService.Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMetadataService.API", "src\BuildingBlocks\Services\FileMetadataService\FileMetadataService.API\FileMetadataService.API.csproj", "{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileStorageService", "FileStorageService", "{48A0C0E6-6842-4AA8-8850-43C3CBB71AA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.Domain", "src\BuildingBlocks\Services\FileStorageService\FileStorageService.Domain\FileStorageService.Domain.csproj", "{3D36FB93-B782-4007-AABE-8590D2C4102B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.Application", "src\BuildingBlocks\Services\FileStorageService\FileStorageService.Application\FileStorageService.Application.csproj", "{D6D8ED6C-FDBB-4529-8372-37CFF0C1FDC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.Infrastructure", "src\BuildingBlocks\Services\FileStorageService\FileStorageService.Infrastructure\FileStorageService.Infrastructure.csproj", "{734CBCAC-DF58-47A0-9E4A-AD5D0375FE11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorageService.API", "src\BuildingBlocks\Services\FileStorageService\FileStorageService.API\FileStorageService.API.csproj", "{D34D795A-7F2C-4043-96F0-A271253F71F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +83,22 @@ Global
 		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D36FB93-B782-4007-AABE-8590D2C4102B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D36FB93-B782-4007-AABE-8590D2C4102B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D36FB93-B782-4007-AABE-8590D2C4102B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D36FB93-B782-4007-AABE-8590D2C4102B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6D8ED6C-FDBB-4529-8372-37CFF0C1FDC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D8ED6C-FDBB-4529-8372-37CFF0C1FDC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D8ED6C-FDBB-4529-8372-37CFF0C1FDC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D8ED6C-FDBB-4529-8372-37CFF0C1FDC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{734CBCAC-DF58-47A0-9E4A-AD5D0375FE11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{734CBCAC-DF58-47A0-9E4A-AD5D0375FE11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{734CBCAC-DF58-47A0-9E4A-AD5D0375FE11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{734CBCAC-DF58-47A0-9E4A-AD5D0375FE11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34D795A-7F2C-4043-96F0-A271253F71F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34D795A-7F2C-4043-96F0-A271253F71F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34D795A-7F2C-4043-96F0-A271253F71F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34D795A-7F2C-4043-96F0-A271253F71F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +117,11 @@ Global
 		{F20078C9-28A5-43E3-BD13-2C083A9B6794} = {540A24EC-0027-41A5-A340-794F0F2889BC}
 		{0857BAB0-F83B-434B-800F-AA251068472A} = {540A24EC-0027-41A5-A340-794F0F2889BC}
 		{CB8BFFC1-EC92-4DA5-A08F-BB0929677187} = {540A24EC-0027-41A5-A340-794F0F2889BC}
+		{48A0C0E6-6842-4AA8-8850-43C3CBB71AA0} = {719572C9-5739-4AA8-BB5C-63C17B4978CD}
+		{3D36FB93-B782-4007-AABE-8590D2C4102B} = {48A0C0E6-6842-4AA8-8850-43C3CBB71AA0}
+		{D6D8ED6C-FDBB-4529-8372-37CFF0C1FDC2} = {48A0C0E6-6842-4AA8-8850-43C3CBB71AA0}
+		{734CBCAC-DF58-47A0-9E4A-AD5D0375FE11} = {48A0C0E6-6842-4AA8-8850-43C3CBB71AA0}
+		{D34D795A-7F2C-4043-96F0-A271253F71F8} = {48A0C0E6-6842-4AA8-8850-43C3CBB71AA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD9CB638-C3C4-422A-BC26-9E9893C45894}
