@@ -9,6 +9,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "src\BuildingBlocks\SharedKernel\SharedKernel.csproj", "{B4CFE0B9-046B-4563-A993-9A892C9782B5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{719572C9-5739-4AA8-BB5C-63C17B4978CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService", "{91544791-FAB8-4B9F-8330-F4684A27A02B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.API", "src\BuildingBlocks\Services\AuthService\AuthService.API\AuthService.API.csproj", "{71644861-3306-41E6-8A8B-EA59CF8556CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Application", "src\BuildingBlocks\Services\AuthService\AuthService.Application\AuthService.Application.csproj", "{61133062-9DBA-49BC-A5C9-8692A63ECE73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Domain", "src\BuildingBlocks\Services\AuthService\AuthService.Domain\AuthService.Domain.csproj", "{FA9586AD-89A4-4067-924A-11D41082A31C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService.Infrastructure", "src\BuildingBlocks\Services\AuthService\AuthService.Infrastructure\AuthService.Infrastructure.csproj", "{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +31,22 @@ Global
 		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4CFE0B9-046B-4563-A993-9A892C9782B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71644861-3306-41E6-8A8B-EA59CF8556CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71644861-3306-41E6-8A8B-EA59CF8556CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71644861-3306-41E6-8A8B-EA59CF8556CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71644861-3306-41E6-8A8B-EA59CF8556CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61133062-9DBA-49BC-A5C9-8692A63ECE73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61133062-9DBA-49BC-A5C9-8692A63ECE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61133062-9DBA-49BC-A5C9-8692A63ECE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61133062-9DBA-49BC-A5C9-8692A63ECE73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA9586AD-89A4-4067-924A-11D41082A31C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA9586AD-89A4-4067-924A-11D41082A31C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA9586AD-89A4-4067-924A-11D41082A31C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA9586AD-89A4-4067-924A-11D41082A31C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -26,6 +54,12 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AD31B74C-572B-442D-AA2E-7EFB27C6A763} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B4CFE0B9-046B-4563-A993-9A892C9782B5} = {AD31B74C-572B-442D-AA2E-7EFB27C6A763}
+		{719572C9-5739-4AA8-BB5C-63C17B4978CD} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{91544791-FAB8-4B9F-8330-F4684A27A02B} = {719572C9-5739-4AA8-BB5C-63C17B4978CD}
+		{71644861-3306-41E6-8A8B-EA59CF8556CD} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
+		{61133062-9DBA-49BC-A5C9-8692A63ECE73} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
+		{FA9586AD-89A4-4067-924A-11D41082A31C} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
+		{50944CCC-6672-4DDB-AC7E-8E25A49BA92B} = {91544791-FAB8-4B9F-8330-F4684A27A02B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD9CB638-C3C4-422A-BC26-9E9893C45894}
